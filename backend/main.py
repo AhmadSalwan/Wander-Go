@@ -61,6 +61,13 @@ def get_flights():
     flights=Flights.query.all()
     json_flights=list(map(lambda x:x.to_json(),flights))
     return jsonify({"flights":json_flights})
+
+@app.route('/flights/<int:flight_id>',methods=['GET'])
+def get_single_flights(flight_id):
+    flights=Flights.query.get(flight_id)
+    if not flights:
+        return jsonify({"message":"ticket not found"})
+    return jsonify(flights.to_json())
     
 @app.route("/create_flight",methods=['POST'])
 def create_flight():
@@ -80,12 +87,12 @@ def create_flight():
 
 @app.route('/create_booking',methods=['POST'])
 def create_booking():
-    data=request.json()
+    data=request.json
     new_booking = Booking(user_id=data['user_id'], flight_id=data['flight_id'], seat_number=data['seat_number'],
                           booking_time=data['booking_time'])
     db.session.add(new_booking)
     db.session.commit()
-    return jsonify({'message': 'Booking created successfully'})
+    return jsonify({'message': 'Booking created successfully'}),201
 
 if __name__=="__main__":
     with app.app_context():

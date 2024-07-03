@@ -14,7 +14,9 @@ const Login=()=>{
             const{users}=data;
 
             const user=users.find(u=>u.email === email && u.password === password)
+    
             if(user){
+              localStorage.setItem('user_id',user.id)
                 setMessage("Login Successful")
             }
             else{

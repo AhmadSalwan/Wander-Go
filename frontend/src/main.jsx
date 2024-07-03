@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css'
 import Transaction from './transaction';
 import App from './App';
+import Confirm  from './confirm';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path:'/app',
     element:<App/>
+  },
+  {
+    path:"/transaction/:flight_id",
+    element:<Confirm/>
   }
 ])
 
