@@ -22,3 +22,38 @@ class user(db.Model):
             "gender":self.gender,
             "alamat":self.alamat
         }
+    
+class Flights(db.Model):
+    __tablename__="flights"
+    id=db.Column(db.Integer,primary_key=True)
+    flight_number=db.Column(db.String(10),nullable=False)
+    departure_city = db.Column(db.String(50), nullable=False)
+    destination_city = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Float, nullable=False)
+
+    
+    def to_json(self):
+        return{
+            "id":self.id,
+            "flightNumber":self.flight_number,
+            "departureCity":self.departure_city,
+            "destinationCity":self.destination_city,
+            "price":self.price
+        }
+
+class Booking(db.Model):
+    __tablename__="bookings"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    flight_id = db.Column(db.Integer, db.ForeignKey('flights.id'), nullable=False)
+    seat_number = db.Column(db.String(10), nullable=False)
+    booking_time = db.Column(db.DateTime, nullable=False)
+
+    def to_json(self):
+        return{
+            "id":self.id,
+            "userId":self.user_id,
+            "flightId":self.flight_id,
+            "seatNumber":self.seat_number,
+            "bookingTime":self.booking_time
+        }

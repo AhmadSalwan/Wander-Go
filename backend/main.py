@@ -1,6 +1,6 @@
 from flask import request,jsonify
 from config import app,db
-from models import user
+from models import user,Flights,Booking
 
 @app.route("/list_user",methods=["GET"])
 def get_user():
@@ -55,7 +55,37 @@ def delete_user(user_id):
     db.session.commit()
 
     return jsonify({"message":"User Deleted"}),200
+
+@app.route('/flights',methods=['GET'])
+def get_flights():
+    flights=Flights.query.all()
+    json_flights=list(map(lambda x:x.to_json(),flights))
+    return jsonify({"flights":json_flights})
     
+@app.route("/create_flight",methods=['POST'])
+def create_flight():
+    flight_number=request.json.get('flightNumber')
+    departure_city=request.json.get('departureCity')
+    destination_city=request.json.get('destinationCity')
+    price=request.json.get('price')
+
+    new_flight=Flights(flight_number=flight_number,departure_city=departure_city,
+                       destination_city=destination_city,price=price)
+    try:
+        db.session.add(new_flight)
+        db.session.commit()
+    except Exception as e:
+        return jsonify({"message":str(e)}),400
+    return jsonify({"message":"User Created"})
+
+@app.route('/create_booking',methods=['POST'])
+def create_booking():
+    data=request.json()
+    new_booking = Booking(user_id=data['user_id'], flight_id=data['flight_id'], seat_number=data['seat_number'],
+                          booking_time=data['booking_time'])
+    db.session.add(new_booking)
+    db.session.commit()
+    return jsonify({'message': 'Booking created successfully'})
 
 if __name__=="__main__":
     with app.app_context():
