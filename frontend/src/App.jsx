@@ -1,47 +1,52 @@
-import { useState,useEffect } from 'react'
-import {BrowserRouter,Routes,Route} from 'react-router-dom'
-import Login from './Auth/Login'
-import Transaction from './transaction'
-import React,{Fragment} from 'react'
-import './App.css'
+import React, { Fragment } from 'react';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import Login from './Auth/Login';
+import Transaction from './transaction';
+import './App.css';
 
 function App() {
-  return(
-  <Fragment>
-      <div className='w-screen h-screen relative select-none'>
-        {/* <div className="absolute top-0 z-30 font-Inter w-full">
-          <nav className='flex justify-between items-center text-xl text-white font-semibold mx-20 py-5'>
-            <a href="#" className="cursor-pointer">TAILORED EXPERIENCES</a>
-            <a href="#" className="cursor-pointer">DESTINATIONS</a>
-            <a href="#" className="cursor-pointer">PRIVATE RENTAL</a>
-            <a href="#" className="cursor-pointer">ABOUT US</a>
-            <a href="#" className="cursor-pointer">BLOG & PRESS</a>
-            <a href="#" className="cursor-pointer">CONTACT US</a>
-          </nav>
-        </div> */}
-       <img className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-cover' style={{ maxWidth: '100vw', maxHeight: '100vh' }} src='/image/airplaneimage.jpg' alt='Landing Page'
-/>
+  const navigate = useNavigate();
 
-        <div className="absolute inset-0 bg-black opacity-60 z-10"></div>
-        <div className="font-Inter font-semibold flex absolute w-full z-30 top-1/3 left-1/4">
-          <div className="mb-8 flex-col justify-center text-center w-full">
-            <h1 className="text-8xl font-Inter font-black leading-tight text-white">WONDER GO</h1>
-            <h1 className="text-6xl font-Inter font-black leading-tight text-white">Hallmark of Airport</h1>
-          </div>
+  const handleLogout = () => {
+    localStorage.removeItem('user_id');
+    navigate('/');
+  };
+  const toMain = () => {
+    navigate('/app');
+  };
+
+  return (
+    <Fragment>
+      <div className="position-relative">
+        <img className="img-fluid w-100 h-100" src="/image/airplaneimage.jpg" alt="Landing Page" style={{ objectFit: 'cover' }} />
+        <div className="position-absolute top-0 w-100 h-100 d-flex flex-column justify-content-center align-items-center text-white" style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+          <h1 className="display-4 font-weight-bold mb-4">Welcome to</h1>
+          <h1 className="display-1 font-weight-bold">WONDER GO</h1>
         </div>
+        <button className="btn btn-danger position-absolute" style={{ top: '10px', right: '10px' }} onClick={handleLogout}>
+          Logout
+        </button>
+        <button className="btn btn-success position-absolute" style={{ top: '10px', right: '100px' }} onClick={toMain}>
+          Home
+        </button>
       </div>
-      <div className="m-10">
-        <div className="flex justify-between items-center">
-          <div className="ml-3">
-            <span className="font-Jost italic text-4xl">Best Location</span>
-            <h1 className="font-Abhaya text-8xl font-bold">Sulawesi Tourism</h1>
-          </div>
-          <p className="mr-3 font-Inter italic text-2xl text-slate-600">Extraordinary natural beauty, enjoy the rich <br/> culture, and experience the friendliness of the <br/> local people.</p>
+      <div className="container my-5">
+        <div className="text-center mb-5">
+          <a href="/transaction">
+            <button className="btn btn-primary mr-2">Lihat Tiket</button>
+          </a>
+          <a href="/my_tickets">
+            <button className="btn btn-secondary ml-2">Tiket Ku</button>
+          </a>
         </div>
-        <img className="w-full mx-3 h-fit mt-2 object-cover" src="/image/gambar.png" alt="Sulawesi Tourism"/>
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-10">
+            <img className="img-fluid" src="/image/gambar.png" alt="Sulawesi Tourism" />
+          </div>
+        </div>
       </div>
     </Fragment>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Confirm = () => {
     const [flight, setFlight] = useState(null);
@@ -20,6 +21,13 @@ const Confirm = () => {
             alert("Error loading data");
         }
     };
+    const handleLogout = () => {
+        localStorage.removeItem('user_id');
+        navigate('/');
+      };
+      const toMain = () => {
+        navigate('/app');
+      };
 
     useEffect(() => {
         fetchFlight();
@@ -52,15 +60,26 @@ const Confirm = () => {
     };
 
     return (
-        <div>
+        <div className="container mt-5">
+        <button className="btn btn-danger position-absolute" style={{ top: '10px', right: '10px' }} onClick={handleLogout}>
+          Logout
+        </button>
+        <button className="btn btn-success position-absolute" style={{ top: '10px', right: '100px' }} onClick={toMain}>
+          Home
+        </button>
+
             {flight ? (
-                <div>
-                    <h2>Confirm Purchase</h2>
-                    <p><strong>Flight Number:</strong> {flight.flightNumber}</p>
-                    <p><strong>Departure City:</strong> {flight.departureCity}</p>
-                    <p><strong>Destination City:</strong> {flight.destinationCity}</p>
-                    <p><strong>Price:</strong> {flight.price}</p>
-                    <button onClick={handleConfirmPurchase}>Confirm Purchase</button>
+                <div className="card">
+                    <div className="card-header">
+                        <h2>Confirm Purchase</h2>
+                    </div>
+                    <div className="card-body">
+                        <p><strong>Flight Number:</strong> {flight.flightNumber}</p>
+                        <p><strong>Departure City:</strong> {flight.departureCity}</p>
+                        <p><strong>Destination City:</strong> {flight.destinationCity}</p>
+                        <p><strong>Price:</strong> {flight.price}</p>
+                        <button className="btn btn-primary" onClick={handleConfirmPurchase}>Confirm Purchase</button>
+                    </div>
                 </div>
             ) : (
                 <p>Loading...</p>

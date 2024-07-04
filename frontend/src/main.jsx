@@ -6,6 +6,9 @@ import './index.css'
 import Transaction from './transaction';
 import App from './App';
 import Confirm  from './confirm';
+import Register from './Auth/Register';
+import Tickets from './My_tickets';
+
 
 const router = createBrowserRouter([
   {
@@ -23,6 +26,14 @@ const router = createBrowserRouter([
   {
     path:"/transaction/:flight_id",
     element:<Confirm/>
+  },
+  {
+    path:"/register",
+    element:<Register/>
+  },
+  {
+    path:"/my_tickets",
+    element:<Tickets/>
   }
 ])
 

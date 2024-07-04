@@ -93,6 +93,43 @@ def create_booking():
     db.session.add(new_booking)
     db.session.commit()
     return jsonify({'message': 'Booking created successfully'}),201
+@app.route('/user_tickets/<int:user_id>', methods=['GET'])
+def get_user_tickets(user_id):
+    # Mencari booking berdasarkan user_id
+    bookings = Booking.query.filter_by(user_id=user_id).all()
+
+    if not bookings:
+        return jsonify({"message": "No tickets found for this user"}), 404
+
+    # Mengambil detail penerbangan (flights) berdasarkan booking
+    tickets = []
+    for booking in bookings:
+        flight = Flights.query.get(booking.flight_id)
+        if flight:
+            ticket_info = {
+                "id": booking.id,
+                "flightNumber": flight.flight_number,
+                "departureCity": flight.departure_city,
+                "destinationCity": flight.destination_city,
+                "seatNumber": booking.seat_number,
+                "booking_time": booking.booking_time.strftime('%Y-%m-%d %H:%M:%S')  # format tanggal
+            }
+            tickets.append(ticket_info)
+
+    return jsonify({"tickets": tickets})
+
+@app.route("/delete_booking/<int:booking_id>", methods=["DELETE"])
+def delete_booking(booking_id):
+    booking = Booking.query.get(booking_id)
+    if not booking:
+        return jsonify({"message": "Booking not found"}), 404
+    
+    try:
+        db.session.delete(booking)
+        db.session.commit()
+        return jsonify({"message": "Booking deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
 
 if __name__=="__main__":
     with app.app_context():
